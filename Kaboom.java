@@ -28,6 +28,7 @@ public class Kaboom extends JFrame implements ActionListener
     private Renderable[][] myBoard; 
     private static final int kBoardWidth = 10;
     private static final int kBoardHeight = 10;
+    private static final int kMaxBombs = 9;
     private static int gameNumber = 0;
     private int moves = 0;
     private int flagsPlaced = 0;
@@ -222,7 +223,6 @@ public class Kaboom extends JFrame implements ActionListener
 
     protected void restartGame()
     {
-        // TODO
         if (this.myBoard == null)
         {
             this.myBoard = new Tile[this.kBoardHeight][this.kBoardWidth];
@@ -232,46 +232,34 @@ public class Kaboom extends JFrame implements ActionListener
             clearBoard();
         }
         
-        /*
-        // Make a list of all the tiles, in nice predictable order.
-        // Needs to be a LinkedList specifically, since we're calling .pop().
-        LinkedList<Tile> tiles = new LinkedList<Tile>();
-        Tile.Suit[] suits = { Tile.Suit.Bamboo, Tile.Suit.Characters, Tile.Suit.Dots };
-        for (int rank = 1; rank < 8; rank++)
-        {
-            for (Tile.Suit suit : suits)
-            {
-                // There are four of each tile.
-                for (int i = 0; i < 4; i++)
-                {
-                    tiles.add(new Tile(suit, rank));
-                }
-            }
-        }
-        
-        // Shuffle a bitch.
-        java.util.Random generator = new java.util.Random(this.gameNumber);
-        java.util.Collections.shuffle(tiles, generator);
-        
-        // Put our shuffled tiles onto the board.
+        // Fill the board with normal (non-bomb) pieces.
         for (int line = 0; line < this.kBoardHeight; line++)
         {
             for (int column = 0; column < this.kBoardWidth; column++)
             {
-                if (column < this.blankEdgeTiles[line]
-                 || column > this.kBoardWidth - this.blankEdgeTiles[line] - 1
-                 || tiles.isEmpty())
-                {
-                    this.myBoard[line][column] = null;
-                }
-                else
-                {
-                    this.myBoard[line][column] = tiles.pop();
-                    this.tileCount++;
-                }
+                this.myBoard[line][column] = new Tile();
             }
         }
-        */
+        
+        // Figure out (deterministically) where we want the bombs.
+        // Storing them in a Set allows us to avoid duplicates.  Unfortunately,
+        // between Java's lack of type inference, the necessary type-specifying
+        // required by a statically-typed language using a system like
+        // generics, and the fact that you can't genericize primitives like
+        // int, the logic here gets muddled a bit by syntax.
+        Set<Pair<Integer, Integer>> bombSet = new TreeSet<Pair<Integer, Integer>>();
+        java.util.Random generator = new java.util.Random(this.gameNumber);
+        for (int bombNumber = 0; bombNumber < this.kMaxBombs; bombNumber++)
+        {
+            int row = generator.nextInt(boardsize);
+            int column = generator.nextInt(boardsize);
+            bombSet.add(new Pair<Integer, Integer>(row, column));
+        }
+        this.bombs = bombSet.size();
+        for (Pair<Integer, Integer> bombCoordinates : bombSet)
+        {
+            this.myBoard[bombCoordinates.first][bombCoordinates.second].setBombStatus(true);
+        }
 
         this.secondsElapsed = 0;
         updateStatusBar();
@@ -373,21 +361,7 @@ public class Kaboom extends JFrame implements ActionListener
 
 class Tile extends ImageIcon implements Comparable<Tile>, Renderable
 {
-    public enum Suit {Bamboo, Dots, Characters};
-    
-    private Suit suit;
-    private int rank;
-    
-    public Tile(Suit suit, int rank)
-    {
-        super(Toolkit.getDefaultToolkit().getImage(Kaboom.class.getResource("img/" + suit.name().substring(0, 1) + rank + ".JPG")));
-        if (rank < 1 || rank > 7)
-        {
-            throw new IllegalArgumentException("Rank must be between 1 and 7");
-        }
-        this.suit = suit;
-        this.rank = rank;
-    }
+    private bool isBomb = false;
     
     public boolean equals(Object other)
     {
@@ -422,6 +396,25 @@ class Tile extends ImageIcon implements Comparable<Tile>, Renderable
     {
         RenderDescriptor renderDescriptor = new RenderDescriptor();
         return renderDescriptor;
+    }
+    
+    public void setBombStatus(boolean isBomb)
+    {
+        this.isBomb = isBomb;
+    }
+}
+
+/** This is a silly little class, created because Java doesn't have 2-tuples
+ * (or n-tuples of any sort, for that matter).
+ */
+class Pair<E1, E2> {
+    public E1 first;
+    public E2 second;
+    
+    public void Pair<E1, E2>(E1 first, E2 second)
+    {
+        this.first = first;
+        this.second = second;
     }
 }
 
