@@ -363,7 +363,7 @@ public class Kaboom extends JFrame implements ActionListener
 
 class Tile extends ImageIcon implements Comparable<Tile>, Renderable
 {
-    private bool isBomb = false;
+    private boolean isBomb = false;
     
     public boolean equals(Object other)
     {
