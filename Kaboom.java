@@ -260,7 +260,9 @@ public class Kaboom extends JFrame implements ActionListener
         this.numBombs = bombSet.size();
         for (Pair<Integer, Integer> bombCoordinates : bombSet)
         {
-            this.myBoard[bombCoordinates.first][bombCoordinates.second].setBombStatus(true);
+            // TODO: This is bad.
+            Tile tile = (Tile)this.myBoard[bombCoordinates.first][bombCoordinates.second];
+            tile.setBombStatus(true);
         }
 
         this.secondsElapsed = 0;
