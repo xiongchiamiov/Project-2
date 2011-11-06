@@ -257,7 +257,7 @@ public class Kaboom extends JFrame implements ActionListener
             int column = generator.nextInt(this.kBoardWidth);
             bombSet.add(new Pair<Integer, Integer>(row, column));
         }
-        this.bombs = bombSet.size();
+        this.numBombs = bombSet.size();
         for (Pair<Integer, Integer> bombCoordinates : bombSet)
         {
             this.myBoard[bombCoordinates.first][bombCoordinates.second].setBombStatus(true);
