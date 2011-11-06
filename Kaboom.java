@@ -253,8 +253,8 @@ public class Kaboom extends JFrame implements ActionListener
         java.util.Random generator = new java.util.Random(this.gameNumber);
         for (int bombNumber = 0; bombNumber < this.kMaxBombs; bombNumber++)
         {
-            int row = generator.nextInt(boardsize);
-            int column = generator.nextInt(boardsize);
+            int row = generator.nextInt(this.kBoardHeight);
+            int column = generator.nextInt(this.kBoardWidth);
             bombSet.add(new Pair<Integer, Integer>(row, column));
         }
         this.bombs = bombSet.size();
