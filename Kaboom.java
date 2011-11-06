@@ -363,38 +363,9 @@ public class Kaboom extends JFrame implements ActionListener
     }
 }  // end class
 
-class Tile extends ImageIcon implements Comparable<Tile>, Renderable
+class Tile extends ImageIcon implements Renderable
 {
     private boolean isBomb = false;
-    
-    public boolean equals(Object other)
-    {
-        if (other instanceof Tile)
-        {
-            Tile otherTile = (Tile)other;
-            if (this.suit == otherTile.suit && this.rank == otherTile.rank)
-            {
-                return true;
-            }
-        }
-        
-        return false;
-    }
-
-    public int compareTo(Tile other)
-    {
-        if (this.suit == other.suit)
-        {
-            return new Integer(this.rank).compareTo(other.rank);
-        }
-        
-        return new Integer(this.suit.ordinal()).compareTo(other.suit.ordinal());
-    }
-
-    public String toString()
-    {
-        return this.suit.name() + " " + this.rank;
-    }
     
     public RenderDescriptor getRenderDescriptor()
     {
