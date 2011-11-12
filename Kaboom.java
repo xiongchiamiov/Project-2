@@ -18,7 +18,7 @@ public class Kaboom extends JFrame implements ActionListener
 {
     /* Main components of the GUI */
     // DO NOT CHANGE ANY OF THE GUI COMPONENT DECLARATIONS IN THIS SECTION
-    private String[] columns = {"", "", "", "", "", "", "", "", "", "", "", "", };
+    private String[] columns = {"", "", "", "", "", "", "", "", "", "", };
     private JTable table;
     private JMenuBar menuBar;
     private JMenu mnuGame;
