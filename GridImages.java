@@ -93,5 +93,5 @@ public final class GridImages
     private GridImages(String gamePrefix)
     {
     }
-   
 }
+
