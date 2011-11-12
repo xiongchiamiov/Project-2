@@ -371,10 +371,13 @@ public class Kaboom extends JFrame implements ActionListener
 class Tile extends ImageIcon implements Renderable
 {
     private boolean isBomb = false;
+    public Piece status = Piece.hidden;
     
     public RenderDescriptor getRenderDescriptor()
     {
         RenderDescriptor renderDescriptor = new RenderDescriptor();
+        renderDescriptor.isImage = true;
+        renderDescriptor.text = this.status.toString();
         return renderDescriptor;
     }
     
