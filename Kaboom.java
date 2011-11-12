@@ -382,7 +382,7 @@ class Tile extends ImageIcon implements Renderable
 /** This is a silly little class, created because Java doesn't have 2-tuples
  * (or n-tuples of any sort, for that matter).
  */
-class Pair<E1, E2> {
+class Pair<E1 extends Comparable<?>, E2 extends Comparable<?>> implements Comparable<Pair<E1, E2>> {
     public E1 first;
     public E2 second;
     
@@ -390,6 +390,34 @@ class Pair<E1, E2> {
     {
         this.first = first;
         this.second = second;
+    }
+    
+    public boolean equals(Object other)
+    {
+        if (other instanceof Pair)
+        {
+            Pair otherPair = (Pair)other;
+            return this.first.equals(otherPair.first) && this.second.equals(otherPair.second);
+        }
+        
+        return false;
+    }
+    
+    public int compareTo(Pair<E1, E2> other)
+    {
+        if (this.equals(other))
+        {
+            return 0;
+        }
+        
+        if (this.first.equals(other.first))
+        {
+            return ((Comparable)this.second).compareTo(other.second);
+        }
+        else
+        {
+            return ((Comparable)this.first).compareTo(other.first);
+        }
     }
 }
 
