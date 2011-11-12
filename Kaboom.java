@@ -341,7 +341,7 @@ public class Kaboom extends JFrame implements ActionListener
     protected void clickTile(final int row, final int column)
     {
         // Basic sanity check.
-        if (row < 0 || row > this.kBoardHeight || column < 0 || column > this.kBoardWidth)
+        if (row < 0 || row >= this.kBoardHeight || column < 0 || column >= this.kBoardWidth)
         {
             throw new IllegalArgumentException("Tile must be on the board.");
         }
