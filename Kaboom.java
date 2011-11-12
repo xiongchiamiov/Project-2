@@ -79,6 +79,11 @@ public class Kaboom extends JFrame implements ActionListener
                 return c;
             }
             
+            public TableCellRenderer getCellRenderer(int row, int column)
+            {
+                return new PieceRenderer(GridImages.createInstance(""));
+            }
+            
             // Override paint so as to show the table background
             public void paint( Graphics g )
             {
