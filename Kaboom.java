@@ -392,6 +392,8 @@ public class Kaboom extends JFrame implements ActionListener
         Tile tile = (Tile)this.myBoard[row][column];
         if (tile.status == Piece.hidden)
         {
+            this.moves++;
+            this.updateStatusBar();
             if (tile.isBomb)
             {
                 tile.status = Piece.exploded;
@@ -408,9 +410,17 @@ public class Kaboom extends JFrame implements ActionListener
         Tile tile = (Tile)this.myBoard[row][column];
         tile.numSurroundingBombs = this.calculateSurroundingBombs(row, column);
 
-        // We don't want to auto-reveal non-empty tiles.
-        if (tile.isBomb || tile.numSurroundingBombs != 0)
+        // We don't want to auto-reveal bombs.
+        if (tile.isBomb)
         {
+            return;
+        }
+        // Tiles next to bombs should be counted as empty for the sake of
+        // calculations, but we want to stop recursing at them; they form a
+        // barrier to contiguous "truly empty" spaces.
+        if (tile.numSurroundingBombs != 0)
+        {
+            tile.status = Piece.empty;
             return;
         }
 
