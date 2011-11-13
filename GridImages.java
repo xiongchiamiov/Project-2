@@ -77,7 +77,7 @@ public final class GridImages
     public int getPieceHeight() 
     {
 		// TODO: Non-magify.
-		return 78;
+		return 65;
     }
 
     /** Accessor to the piece width.
@@ -86,7 +86,7 @@ public final class GridImages
     public int getPieceWidth() 
     {
 		// TODO: Non-magify.
-		return 58;
+		return 43;
     }
 
     /** Constructor is private to defeat instantiation */

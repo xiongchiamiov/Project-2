@@ -265,7 +265,6 @@ public class Kaboom extends JFrame implements ActionListener
         this.numBombs = bombSet.size();
         for (Pair<Integer, Integer> bombCoordinates : bombSet)
         {
-            // TODO: This is bad.
             Tile tile = (Tile)this.myBoard[bombCoordinates.first][bombCoordinates.second];
             tile.isBomb = true;
         }
@@ -273,6 +272,45 @@ public class Kaboom extends JFrame implements ActionListener
         this.secondsElapsed = 0;
         updateStatusBar();
         setTitle("Mahjongg - board " + this.gameNumber);
+    }
+    
+    /**
+     * Calculate how many bombs are adjacent to a spot.
+     *
+     * Don't call this on a spot that has a bomb.
+     */
+    protected int calculateSurroundingBombs(int row, int column)
+    {
+        if (((Tile)this.myBoard[row][column]).isBomb)
+        {
+            throw new IllegalArgumentException("You should never be calculating nearby bombs for a bomb spot!");
+        }
+        
+        int nearbyBombs = 0;
+        // We don't care about including the actual tile in this list because
+        // the above assertion guarantees it's not a bomb.
+        int[] offsets = {-1, 0, 1};
+        for (int offsetRow : offsets)
+        {
+            for (int offsetColumn : offsets)
+            {
+                // Easier than doing bounds-checking.
+                try {
+                    Tile adjacentTile = (Tile)this.myBoard[row+offsetRow][column+offsetColumn];
+                    if (adjacentTile.isBomb)
+                    {
+                        nearbyBombs++;
+                    }
+                }
+                catch (ArrayIndexOutOfBoundsException e)
+                {
+                    // Do nothing, because we don't care about tiles that are
+                    // off the board.
+                }
+            }
+        }
+        
+        return nearbyBombs;
     }
     
     protected void startTimer()
@@ -361,6 +399,7 @@ public class Kaboom extends JFrame implements ActionListener
             else
             {
                 tile.status = Piece.empty;
+                tile.numSurroundingBombs = this.calculateSurroundingBombs(row, column);
             }
         }
     }
@@ -382,13 +421,23 @@ public class Kaboom extends JFrame implements ActionListener
 class Tile extends ImageIcon implements Renderable
 {
     public boolean isBomb = false;
+    public int numSurroundingBombs = 0;
     public Piece status = Piece.hidden;
     
     public RenderDescriptor getRenderDescriptor()
     {
         RenderDescriptor renderDescriptor = new RenderDescriptor();
-        renderDescriptor.isImage = true;
-        renderDescriptor.text = this.status.toString();
+        if (numSurroundingBombs == 0)
+        {
+            renderDescriptor.isImage = true;
+            renderDescriptor.text = this.status.toString();
+        }
+        else
+        {
+            renderDescriptor.isImage = false;
+            renderDescriptor.isInverse = true; // White so we can see it.
+            renderDescriptor.text = Integer.toString(this.numSurroundingBombs);
+        }
         return renderDescriptor;
     }
 }
