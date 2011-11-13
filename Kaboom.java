@@ -38,8 +38,8 @@ public class Kaboom extends JFrame implements ActionListener
     private int secondsElapsed = 0;
     
     /* Square dimensions in pixels */
-    private static final int kTileWidth = 58;
-    private static final int kTileHeight = 78;
+    private static final int kTileWidth = 65;
+    private static final int kTileHeight = 43;
     
     
     /** Create a GUI.
@@ -267,7 +267,7 @@ public class Kaboom extends JFrame implements ActionListener
         {
             // TODO: This is bad.
             Tile tile = (Tile)this.myBoard[bombCoordinates.first][bombCoordinates.second];
-            tile.setBombStatus(true);
+            tile.isBomb = true;
         }
 
         this.secondsElapsed = 0;
@@ -351,7 +351,18 @@ public class Kaboom extends JFrame implements ActionListener
             throw new IllegalArgumentException("Tile must be on the board.");
         }
         
-        // TODO
+        Tile tile = (Tile)this.myBoard[row][column];
+        if (tile.status == Piece.hidden)
+        {
+            if (tile.isBomb)
+            {
+                tile.status = Piece.exploded;
+            }
+            else
+            {
+                tile.status = Piece.empty;
+            }
+        }
     }
     
     // Local main to launch the GUI
@@ -370,7 +381,7 @@ public class Kaboom extends JFrame implements ActionListener
 
 class Tile extends ImageIcon implements Renderable
 {
-    private boolean isBomb = false;
+    public boolean isBomb = false;
     public Piece status = Piece.hidden;
     
     public RenderDescriptor getRenderDescriptor()
@@ -379,11 +390,6 @@ class Tile extends ImageIcon implements Renderable
         renderDescriptor.isImage = true;
         renderDescriptor.text = this.status.toString();
         return renderDescriptor;
-    }
-    
-    public void setBombStatus(boolean isBomb)
-    {
-        this.isBomb = isBomb;
     }
 }
 
