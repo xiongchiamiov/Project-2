@@ -373,7 +373,14 @@ public class Kaboom extends JFrame implements ActionListener
         }
         else if ("Scores".equals(e.getActionCommand()))
         {
-            // TODO
+            try {
+                HighScores highScores = HighScores.createInstance("");
+                JOptionPane.showMessageDialog(this, highScores.getHighScores(true));
+            }
+            catch (java.io.IOException exception)
+            {
+                System.err.println(exception);
+            }
         }
         else if ("Cheat".equals(e.getActionCommand()))
         {
