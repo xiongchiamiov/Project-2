@@ -398,8 +398,46 @@ public class Kaboom extends JFrame implements ActionListener
             }
             else
             {
-                tile.status = Piece.empty;
-                tile.numSurroundingBombs = this.calculateSurroundingBombs(row, column);
+                this.revealEmptyCells(row, column);
+            }
+        }
+    }
+    
+    protected void revealEmptyCells(int row, int column)
+    {
+        Tile tile = (Tile)this.myBoard[row][column];
+        tile.numSurroundingBombs = this.calculateSurroundingBombs(row, column);
+
+        // We don't want to auto-reveal non-empty tiles.
+        if (tile.isBomb || tile.numSurroundingBombs != 0)
+        {
+            return;
+        }
+
+        tile.status = Piece.empty; // [2]
+        
+        // We don't care about including the actual tile in this list because
+        // the condition at [1] will always be false for it due to [2].
+        int[] offsets = {-1, 0, 1};
+        for (int offsetRow : offsets)
+        {
+            for (int offsetColumn : offsets)
+            {
+                // Easier than doing bounds-checking.
+                try {
+                    Tile adjacentTile = (Tile)this.myBoard[row+offsetRow][column+offsetColumn];
+                    // Only recurse to tiles that haven't been revealed already.
+                    // Otherwise, we'd get infinite recursion back and forth.
+                    if (adjacentTile.status == Piece.hidden) // [1]
+                    {
+                        this.revealEmptyCells(row+offsetRow, column+offsetColumn);
+                    }
+                }
+                catch (ArrayIndexOutOfBoundsException e)
+                {
+                    // Do nothing, because we don't care about tiles that are
+                    // off the board.
+                }
             }
         }
     }
