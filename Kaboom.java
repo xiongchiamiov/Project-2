@@ -281,6 +281,7 @@ public class Kaboom extends JFrame implements ActionListener
         }
 
         this.secondsElapsed = 0;
+        this.moves = 0;
         updateStatusBar();
         setTitle("Mines - board " + this.gameNumber);
     }
