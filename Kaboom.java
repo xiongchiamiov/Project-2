@@ -364,7 +364,12 @@ public class Kaboom extends JFrame implements ActionListener
         }
         else if ("Select Game".equals(e.getActionCommand()))
         {
-            // TODO
+            String gameNumber = (String)JOptionPane.showInputDialog(this, "Enter desired game number (1 - 5000):", "Select Game", JOptionPane.QUESTION_MESSAGE, null, null, "");
+            if (gameNumber != null)
+            {
+                this.gameNumber = Integer.parseInt(gameNumber);
+                this.restartGame();
+            }
         }
         else if ("Scores".equals(e.getActionCommand()))
         {
