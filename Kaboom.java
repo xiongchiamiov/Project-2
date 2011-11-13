@@ -205,10 +205,21 @@ public class Kaboom extends JFrame implements ActionListener
     {
         public void mouseReleased(MouseEvent ev)
         {
-            int col = table.getSelectedColumn();
-            int row = table.getSelectedRow();
             // call methods to handle player's click
-            clickTile(row, col);
+            // Left-click?
+            if (ev.getButton() == MouseEvent.BUTTON1)
+            {
+                int col = table.getSelectedColumn();
+                int row = table.getSelectedRow();
+                clickTile(row, col);
+            }
+            // Right-click?
+            else if (ev.getButton() == MouseEvent.BUTTON3)
+            {
+                int col = table.columnAtPoint(ev.getPoint());
+                int row = table.rowAtPoint(ev.getPoint());
+                rightClickTile(row, col);
+            }
             repaint();
         }
     };
@@ -390,7 +401,7 @@ public class Kaboom extends JFrame implements ActionListener
         }
         
         Tile tile = (Tile)this.myBoard[row][column];
-        if (tile.status == Piece.hidden)
+        if (tile.status == Piece.hidden || tile.status == Piece.flagged)
         {
             this.moves++;
             this.updateStatusBar();
@@ -438,7 +449,8 @@ public class Kaboom extends JFrame implements ActionListener
                     Tile adjacentTile = (Tile)this.myBoard[row+offsetRow][column+offsetColumn];
                     // Only recurse to tiles that haven't been revealed already.
                     // Otherwise, we'd get infinite recursion back and forth.
-                    if (adjacentTile.status == Piece.hidden) // [1]
+                    if (adjacentTile.status == Piece.hidden
+                     || adjacentTile.status == Piece.flagged) // [1]
                     {
                         this.revealEmptyCells(row+offsetRow, column+offsetColumn);
                     }
@@ -450,6 +462,28 @@ public class Kaboom extends JFrame implements ActionListener
                 }
             }
         }
+    }
+
+    protected void rightClickTile(final int row, final int column)
+    {
+        // Basic sanity check.
+        if (row < 0 || row >= this.kBoardHeight || column < 0 || column >= this.kBoardWidth)
+        {
+            throw new IllegalArgumentException("Tile must be on the board.");
+        }
+        
+        Tile tile = (Tile)this.myBoard[row][column];
+        if (tile.status == Piece.hidden)
+        {
+            tile.status = Piece.flagged;
+            this.flagsPlaced++;
+        }
+        else if (tile.status == Piece.flagged)
+        {
+            tile.status = Piece.hidden;
+            this.flagsPlaced--;
+        }
+        this.updateStatusBar();
     }
     
     // Local main to launch the GUI
