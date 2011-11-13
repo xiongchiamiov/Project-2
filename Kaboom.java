@@ -407,7 +407,10 @@ public class Kaboom extends JFrame implements ActionListener
             this.updateStatusBar();
             if (tile.isBomb)
             {
+                this.revealBoard();
                 tile.status = Piece.exploded;
+                // TODO: This should be shown *after* the pieces are rendered revealed.
+                JOptionPane.showMessageDialog(this, "You lost.");
             }
             else
             {
@@ -459,6 +462,26 @@ public class Kaboom extends JFrame implements ActionListener
                 {
                     // Do nothing, because we don't care about tiles that are
                     // off the board.
+                }
+            }
+        }
+    }
+    
+    protected void revealBoard()
+    {
+        for (int row = 0; row < this.kBoardHeight; row++)
+        {
+            for (int column = 0; column < this.kBoardWidth; column++)
+            {
+                Tile tile = (Tile)this.myBoard[row][column];
+                if (tile.isBomb)
+                {
+                    tile.status = Piece.bomb;
+                }
+                else
+                {
+                    tile.status = Piece.empty;
+                    tile.numSurroundingBombs = this.calculateSurroundingBombs(row, column);
                 }
             }
         }
