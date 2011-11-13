@@ -371,7 +371,7 @@ public class Kaboom extends JFrame implements ActionListener
         }
         else if ("Cheat".equals(e.getActionCommand()))
         {
-            // TODO
+            this.revealBoard();
             updateStatusBar();
         }
         else if ("Quit".equals(e.getActionCommand()))
