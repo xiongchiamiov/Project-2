@@ -499,6 +499,24 @@ public class Kaboom extends JFrame implements ActionListener
             }
         }
     }
+    
+    protected boolean isBoardWon()
+    {
+        for (int row = 0; row < this.kBoardHeight; row++)
+        {
+            for (int column = 0; column < this.kBoardWidth; column++)
+            {
+                Tile tile = (Tile)this.myBoard[row][column];
+                if (!tile.isBomb && (tile.status == Piece.hidden || tile.status == Piece.flagged))
+                {
+                    System.out.println("("+row+","+column+"): "+tile.status);
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
 
     protected void rightClickTile(final int row, final int column)
     {
