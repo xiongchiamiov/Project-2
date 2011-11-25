@@ -428,6 +428,25 @@ public class Kaboom extends JFrame implements ActionListener
             else
             {
                 this.revealEmptyCells(row, column);
+                if (this.isBoardWon())
+                {
+                    String time = this.secondsElapsed / 60 + ":" + String.format("%02d", this.secondsElapsed % 60);
+                    int choice = JOptionPane.showConfirmDialog(this, "Game "+this.gameNumber+" Cleared!\nSave your time of "+time+"?", "Win Dialog", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    // Magic number for "Yes"
+                    if (choice == 0)
+                    {
+                        String name = (String)JOptionPane.showInputDialog(this, "Your score of "+time+" will be entered into the Hall of Fame.  Enter your name:", "Hall of Fame Entry", JOptionPane.QUESTION_MESSAGE, null, null, "");
+                        HighScores highScores = HighScores.createInstance("");
+                        try
+                        {
+                            highScores.saveScore(time, name);
+                        }
+                        catch (java.io.IOException e)
+                        {
+                            System.err.println(e.getStackTrace());
+                        }
+                    }
+                }
             }
         }
     }
@@ -500,6 +519,9 @@ public class Kaboom extends JFrame implements ActionListener
         }
     }
     
+    /**
+     * The board is won if all non-bomb pieces have been revealed.
+     */
     protected boolean isBoardWon()
     {
         for (int row = 0; row < this.kBoardHeight; row++)
@@ -509,7 +531,6 @@ public class Kaboom extends JFrame implements ActionListener
                 Tile tile = (Tile)this.myBoard[row][column];
                 if (!tile.isBomb && (tile.status == Piece.hidden || tile.status == Piece.flagged))
                 {
-                    System.out.println("("+row+","+column+"): "+tile.status);
                     return false;
                 }
             }
