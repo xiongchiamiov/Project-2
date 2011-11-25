@@ -455,6 +455,14 @@ public class Kaboom extends JFrame implements ActionListener
                 }
             }
         }
+        // Already-clicked pieces are still supposed to increment the move
+        // counter.  It's easier to do that here, rather than earlier, because
+        // we'd have to make more logic exceptions.
+        else if (!tile.isBomb)
+        {
+            this.moves++;
+            this.updateStatusBar();
+        }
     }
     
     protected void revealEmptyCells(int row, int column)
