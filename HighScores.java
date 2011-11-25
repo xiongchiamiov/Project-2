@@ -58,7 +58,17 @@ Scores are sorted lexicographically (like Strings), not numerically.
         List<String> highScores = new ArrayList<String>();
         
         // Ugh.  Java I/O is so *verbose*.
-        BufferedReader in = new BufferedReader(new FileReader(this.gamePrefix + this.kScoresFile));
+        BufferedReader in;
+        try
+        {
+            in = new BufferedReader(new FileReader(this.gamePrefix + this.kScoresFile));
+        }
+        catch (java.io.FileNotFoundException e)
+        {
+            // If the file hasn't been created, we have no scores.
+            return "";
+        }
+
         while (in.ready())
         {
             highScores.add(in.readLine());
