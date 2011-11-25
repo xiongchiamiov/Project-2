@@ -46,7 +46,7 @@ public final class GridImages
                 filename = "bomb.jpg";
                 break;
             case empty:
-                filename = "empty.png";
+                filename = "empty.jpg";
                 break;
             case exploded:
                 filename = "exploded.jpg";
