@@ -97,6 +97,12 @@ Scores are sorted lexicographically (like Strings), not numerically.
     
     public void saveScore(String valueToSave, String playerName) throws IOException
     {
+        // Truncate names to 20 characters.
+        if (playerName.length() > 20)
+        {
+            playerName = playerName.substring(0, 20);
+        }
+        
         PrintWriter out = new PrintWriter(new FileWriter(this.gamePrefix + this.kScoresFile, true));
         out.println(valueToSave + "  " + playerName);
         out.close();
