@@ -37,6 +37,7 @@ public class Kaboom extends JFrame implements ActionListener
     private int flagsPlaced = 0;
     private int numBombs = 0;
     private int secondsElapsed = 0;
+    private boolean justCheated = false;
     
     /* Square dimensions in pixels */
     private static final int kTileWidth = 65;
@@ -391,6 +392,7 @@ public class Kaboom extends JFrame implements ActionListener
         else if ("Cheat".equals(e.getActionCommand()))
         {
             this.revealBoard();
+            this.justCheated = true;
             updateStatusBar();
         }
         else if ("Quit".equals(e.getActionCommand()))
@@ -420,9 +422,10 @@ public class Kaboom extends JFrame implements ActionListener
         }
         
         Tile tile = (Tile)this.myBoard[row][column];
-        if (tile.status == Piece.hidden || tile.status == Piece.flagged)
+        if (tile.status == Piece.hidden || tile.status == Piece.flagged || this.justCheated)
         {
             this.moves++;
+            this.justCheated = false;
             this.updateStatusBar();
             if (tile.isBomb)
             {
