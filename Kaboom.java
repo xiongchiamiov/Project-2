@@ -31,6 +31,7 @@ public class Kaboom extends JFrame implements ActionListener
     private static final int kBoardWidth = 10;
     private static final int kBoardHeight = 10;
     private static final int kMaxBombs = 9;
+    private static final int kMaxGameNumber = 5000;
     private static int gameNumber = 0;
     private int moves = 0;
     private int flagsPlaced = 0;
@@ -65,6 +66,7 @@ public class Kaboom extends JFrame implements ActionListener
     public void layoutGUI()
     {
         loadImages();
+        this.gameNumber = (new java.util.Random()).nextInt(this.kMaxGameNumber);
         newGame();
         startTimer();
         table = new JTable(this.myBoard, this.columns)
