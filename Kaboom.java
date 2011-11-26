@@ -24,6 +24,7 @@ public class Kaboom extends JFrame implements ActionListener
     private JMenu mnuGame;
     private JMenuItem[] mnuItems;
     private JLabel lblStatus = new JLabel();
+    private JLabel timerStatus = new JLabel();
     private ImageIcon background;
     
     /* The game board */
@@ -134,6 +135,7 @@ public class Kaboom extends JFrame implements ActionListener
         // Create a panel for the status information
         JPanel statusPane = new JPanel();
         statusPane.add(this.lblStatus);
+        statusPane.add(this.timerStatus);
         this.lblStatus.setName("Status");
         statusPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         getContentPane().add(statusPane);
@@ -349,6 +351,7 @@ public class Kaboom extends JFrame implements ActionListener
        this.lblStatus.setText("Moves: " + this.moves + "  "
                             + "Flags: " + this.flagsPlaced + "/" + this.numBombs + "  "
                             );
+       this.timerStatus.setText(this.secondsElapsed / 60 + ":" + String.format("%02d", this.secondsElapsed % 60));
     }
     
     /** Handle button clicks
