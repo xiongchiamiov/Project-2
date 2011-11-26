@@ -239,6 +239,10 @@ public class Kaboom extends JFrame implements ActionListener
     protected void newGame()
     {
         this.gameNumber++;
+        if (this.gameNumber > this.kMaxGameNumber)
+        {
+            this.gameNumber = 1;
+        }
         restartGame();
     }
 
