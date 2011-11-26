@@ -393,7 +393,7 @@ public class Kaboom extends JFrame implements ActionListener
         {
             try {
                 HighScores highScores = HighScores.createInstance("");
-                JOptionPane.showMessageDialog(this, highScores.getHighScores(true));
+                JOptionPane.showMessageDialog(this, highScores.getHighScores(true), "High Scores", JOptionPane.PLAIN_MESSAGE);
             }
             catch (java.io.IOException exception)
             {
