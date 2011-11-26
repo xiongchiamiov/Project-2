@@ -61,7 +61,7 @@ Scores are sorted lexicographically (like Strings), not numerically.
         BufferedReader in;
         try
         {
-            in = new BufferedReader(new FileReader(this.gamePrefix + this.kScoresFile));
+            in = new BufferedReader(new FileReader(this.gamePrefix + "/" + this.kScoresFile));
         }
         catch (java.io.FileNotFoundException e)
         {
@@ -103,7 +103,7 @@ Scores are sorted lexicographically (like Strings), not numerically.
             playerName = playerName.substring(0, 20);
         }
         
-        PrintWriter out = new PrintWriter(new FileWriter(this.gamePrefix + this.kScoresFile, true));
+        PrintWriter out = new PrintWriter(new FileWriter(this.gamePrefix + "/" + this.kScoresFile, true));
         out.println(valueToSave + "  " + playerName);
         out.close();
     }
