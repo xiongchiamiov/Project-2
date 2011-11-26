@@ -621,6 +621,7 @@ class Tile extends ImageIcon implements Renderable
         {
             renderDescriptor.isImage = false;
             renderDescriptor.isInverse = true; // White so we can see it.
+            renderDescriptor.isStrong = true; // Be bold, be brave.
             renderDescriptor.text = Integer.toString(this.numSurroundingBombs);
         }
         return renderDescriptor;
