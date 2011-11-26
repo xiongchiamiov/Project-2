@@ -348,7 +348,7 @@ public class Kaboom extends JFrame implements ActionListener
     {
        this.lblStatus.setText("Moves: " + this.moves + "  "
                             + "Flags: " + this.flagsPlaced + "/" + this.numBombs + "  "
-                            + "Time: " + this.secondsElapsed / 60 + ":" + String.format("%02d", this.secondsElapsed % 60));
+                            + " " + this.secondsElapsed / 60 + ":" + String.format("%02d", this.secondsElapsed % 60));
     }
     
     /** Handle button clicks
