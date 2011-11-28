@@ -612,7 +612,11 @@ class Tile extends ImageIcon implements Renderable
     public RenderDescriptor getRenderDescriptor()
     {
         RenderDescriptor renderDescriptor = new RenderDescriptor();
-        if (numSurroundingBombs == 0)
+        if (this.status == Piece.empty && numSurroundingBombs == 0)
+        {
+            renderDescriptor.text = "";
+        }
+        else if (numSurroundingBombs == 0)
         {
             renderDescriptor.isImage = true;
             renderDescriptor.text = this.status.toString();
@@ -629,15 +633,7 @@ class Tile extends ImageIcon implements Renderable
 
     public String toString()
     {
-        if (this.isBomb)
-        {
-            return "bomb";
-        }
-        if (this.numSurroundingBombs == 0)
-        {
-            return "";
-        }
-        return new Integer(this.numSurroundingBombs).toString();
+        return this.getRenderDescriptor().text;
     }
 }
 
