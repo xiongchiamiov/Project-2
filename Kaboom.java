@@ -626,6 +626,19 @@ class Tile extends ImageIcon implements Renderable
         }
         return renderDescriptor;
     }
+
+    public String toString()
+    {
+        if (this.isBomb)
+        {
+            return "bomb";
+        }
+        if (this.numSurroundingBombs == 0)
+        {
+            return "";
+        }
+        return new Integer(this.numSurroundingBombs).toString();
+    }
 }
 
 /** This is a silly little class, created because Java doesn't have 2-tuples
