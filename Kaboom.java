@@ -392,7 +392,7 @@ public class Kaboom extends JFrame implements ActionListener
         else if ("Scores".equals(e.getActionCommand()))
         {
             try {
-                HighScores highScores = HighScores.createInstance("");
+                HighScores highScores = HighScores.createInstance(".");
                 JOptionPane.showMessageDialog(this, highScores.getHighScores(true), "High Scores", JOptionPane.PLAIN_MESSAGE);
             }
             catch (java.io.IOException exception)
@@ -456,14 +456,14 @@ public class Kaboom extends JFrame implements ActionListener
                     if (choice == 0)
                     {
                         String name = (String)JOptionPane.showInputDialog(this, "Your score of "+time+" will be entered into the Hall of Fame.  Enter your name:", "Hall of Fame Entry", JOptionPane.QUESTION_MESSAGE, null, null, "");
-                        HighScores highScores = HighScores.createInstance("");
+                        HighScores highScores = HighScores.createInstance(".");
                         try
                         {
                             highScores.saveScore(time, name);
                         }
                         catch (java.io.IOException e)
                         {
-                            System.err.println(e.getStackTrace());
+                            e.printStackTrace();
                         }
                     }
                 }
