@@ -97,6 +97,11 @@ Scores are sorted lexicographically (like Strings), not numerically.
     
     public void saveScore(String valueToSave, String playerName) throws IOException
     {
+        if (playerName == null)
+        {
+            playerName = "";
+        }
+        
         // Truncate names to 20 characters.
         if (playerName.length() > 20)
         {
